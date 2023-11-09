@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
@@ -42,7 +41,7 @@ class GastoViewModel @Inject constructor(
     var fecha by mutableStateOf("")
     var concepto by mutableStateOf("")
     var ncf by mutableStateOf("")
-    var itbis by mutableStateOf(0)
+    var itbis by mutableStateOf("")
     var monto by mutableStateOf(0)
 
     var fechaError by mutableStateOf(true)
