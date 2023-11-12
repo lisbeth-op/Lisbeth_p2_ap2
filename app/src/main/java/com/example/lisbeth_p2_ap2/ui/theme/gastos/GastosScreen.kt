@@ -3,6 +3,7 @@ package com.example.lisbeth_p2_ap2.ui.theme.gastos
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresExtension
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,6 +24,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardElevation
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -43,6 +47,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
@@ -54,7 +59,6 @@ import kotlinx.coroutines.flow.collectLatest
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import com.example.lisbeth_p2_ap2.data.remote.dto.GastoDto
-import com.example.lisbeth_p2_ap2.ui.theme.Purple40
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -195,7 +199,8 @@ fun RegistroGasto(
 @Composable
 fun MyOutlinedTextField(label: String, value: String, onValueChange: (String) -> Unit, keyboardType: KeyboardType) {
     OutlinedTextField(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth()
+            .shadow(2.dp),
         value = value,
         label = { Text(text = label) },
         singleLine = true,
@@ -204,6 +209,7 @@ fun MyOutlinedTextField(label: String, value: String, onValueChange: (String) ->
             imeAction = ImeAction.Next,
             keyboardType = keyboardType
         )
+
     )
 }
 
@@ -221,10 +227,15 @@ fun CardGastos(
     val fechaBien = capturaFecha.format(DateTimeFormatter.ISO_DATE)
 
     Card(
+
         modifier = Modifier
             .fillMaxWidth()
-            .padding(5.dp)
-            .background(Color.LightGray)
+            .padding(10.dp)
+            .shadow(1.dp)
+            ,
+        border = BorderStroke(1.dp, color = Color.LightGray),
+
+
     ) {
         Column(
             modifier = Modifier
