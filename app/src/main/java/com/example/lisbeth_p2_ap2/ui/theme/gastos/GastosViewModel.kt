@@ -119,7 +119,7 @@ class GastoViewModel @Inject constructor(
             if (!validar()) {
                 var gastos = GastoDto(
                     idGasto = id,
-                    fecha = fecha+"T00:00:00.00.120",
+                    fecha = fecha,
                     idSuplidor = idSuplidor.toIntOrNull() ?: 0,
                     suplidor = "",
                     concepto = concepto,
@@ -158,7 +158,7 @@ class GastoViewModel @Inject constructor(
     }
 
     fun validar(): Boolean {
-        onFechaChange(fecha)
+        onFechaChange(fecha) //+"T00:00:00.00.120"
         onIdSuplidorChange(idSuplidor)
         onConceptoChange(concepto)
         onNcfChange(ncf)
