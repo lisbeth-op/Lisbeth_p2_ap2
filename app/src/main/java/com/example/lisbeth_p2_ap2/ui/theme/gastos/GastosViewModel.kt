@@ -135,14 +135,14 @@ class GastoViewModel @Inject constructor(
                     gastoRepository.postGasto(gastos)
 
                 }
-                mensaje = "guardado correctamente"
+                mensaje = "Guardado"
                 limpiar()
                 Load()
 
 
 
             } else {
-                mensaje = "error"
+                mensaje = "Error"
             }
         }
 

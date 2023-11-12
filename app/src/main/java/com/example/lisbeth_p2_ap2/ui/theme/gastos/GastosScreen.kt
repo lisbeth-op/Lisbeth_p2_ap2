@@ -189,7 +189,7 @@ fun RegistroGasto(
 
 
         ) {
-            Icon(imageVector = Icons.Default.CheckCircle, contentDescription = "guardar")
+            Icon(imageVector = Icons.Default.CheckCircle, contentDescription = null)
             Text(text = "Guardar")
         }
     }
@@ -200,7 +200,7 @@ fun RegistroGasto(
 fun MyOutlinedTextField(label: String, value: String, onValueChange: (String) -> Unit, keyboardType: KeyboardType) {
     OutlinedTextField(
         modifier = Modifier.fillMaxWidth()
-            .shadow(2.dp),
+          ,
         value = value,
         label = { Text(text = label) },
         singleLine = true,
@@ -231,9 +231,10 @@ fun CardGastos(
         modifier = Modifier
             .fillMaxWidth()
             .padding(10.dp)
-            .shadow(1.dp)
-            ,
-        border = BorderStroke(1.dp, color = Color.LightGray),
+        ,
+        border = BorderStroke(1.dp, Color.LightGray)
+
+
 
 
     ) {
@@ -370,7 +371,7 @@ fun CardGastos(
                             contentColor = Color.White
                         )
                     ) {
-                        Icon(imageVector = Icons.Default.Edit, contentDescription = "guardar")
+                        Icon(imageVector = Icons.Default.Edit, contentDescription = null)
                         Text(text = "Editar")
                     }
                 }
@@ -389,7 +390,7 @@ fun CardGastos(
                             contentColor = Color.White
                         )
                     ) {
-                        Icon(imageVector = Icons.Default.Delete, contentDescription = "guardar")
+                        Icon(imageVector = Icons.Default.Delete, contentDescription = null)
                         Text(text = "Eliminar")
                     }
                 }
