@@ -3,6 +3,7 @@ package com.example.lisbeth_p2_ap2.ui.theme.gastos
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresExtension
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,7 +18,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BorderColor
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
@@ -51,6 +54,7 @@ import kotlinx.coroutines.flow.collectLatest
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import com.example.lisbeth_p2_ap2.data.remote.dto.GastoDto
+import com.example.lisbeth_p2_ap2.ui.theme.Purple40
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -86,7 +90,7 @@ fun GastosScreen(viewModel: GastoViewModel = hiltViewModel()) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
-                .padding(8.dp)
+                .padding(5.dp)
 
         ) {
             LazyColumn(
@@ -116,7 +120,7 @@ fun GastosScreen(viewModel: GastoViewModel = hiltViewModel()) {
                     }
                     !uiState.error.isNullOrBlank()-> {
                         item{
-                            Text(text = "error:"+ uiState.error)
+                            Text(text = "Error:"+ uiState.error)
                         }
 
                     }
@@ -140,7 +144,7 @@ fun RegistroGasto(
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    // Columna principal
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -156,23 +160,30 @@ fun RegistroGasto(
                 .padding(8.dp)
         ) {
 
-            CustomOutlinedTextField("Fecha", ViewModel.fecha, ViewModel::onFechaChange, KeyboardType.Text)
-            CustomOutlinedTextField("Id Suplidor", ViewModel.idSuplidor, ViewModel::onIdSuplidorChange, KeyboardType.Number)
-            CustomOutlinedTextField("Concepto", ViewModel.concepto, ViewModel::onConceptoChange, KeyboardType.Text)
-            CustomOutlinedTextField("Ncf", ViewModel.ncf, ViewModel::onNcfChange, KeyboardType.Text)
-            CustomOutlinedTextField("Itbis", ViewModel.itbis, ViewModel::onItbisChange, KeyboardType.Number)
-            CustomOutlinedTextField("Monto", ViewModel.monto, ViewModel::onMontoChange, KeyboardType.Number)
+            MyOutlinedTextField("Fecha", ViewModel.fecha, ViewModel::onFechaChange, KeyboardType.Text)
+            MyOutlinedTextField("Id Suplidor", ViewModel.idSuplidor, ViewModel::onIdSuplidorChange, KeyboardType.Number)
+            MyOutlinedTextField("Concepto", ViewModel.concepto, ViewModel::onConceptoChange, KeyboardType.Text)
+            MyOutlinedTextField("Ncf", ViewModel.ncf, ViewModel::onNcfChange, KeyboardType.Text)
+            MyOutlinedTextField("Itbis", ViewModel.itbis, ViewModel::onItbisChange, KeyboardType.Number)
+            MyOutlinedTextField("Monto", ViewModel.monto, ViewModel::onMontoChange, KeyboardType.Number)
         }
 
-        // Botón de guardar
-        OutlinedButton(
+
+        Button(
+
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp),
             onClick = {
                 keyboardController?.hide()
                 ViewModel.GuardarGasto()
-            }
+            },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF3BA2DA),
+                contentColor = Color.White
+            )
+
+
         ) {
             Icon(imageVector = Icons.Default.CheckCircle, contentDescription = "guardar")
             Text(text = "Guardar")
@@ -182,7 +193,7 @@ fun RegistroGasto(
 
 
 @Composable
-fun CustomOutlinedTextField(label: String, value: String, onValueChange: (String) -> Unit, keyboardType: KeyboardType) {
+fun MyOutlinedTextField(label: String, value: String, onValueChange: (String) -> Unit, keyboardType: KeyboardType) {
     OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
         value = value,
@@ -204,20 +215,21 @@ fun CustomOutlinedTextField(label: String, value: String, onValueChange: (String
 @Composable
 fun CardGastos(
     gastos: GastoDto,
-    viewModel:GastoViewModel
-){
-    val CaptuFecha = LocalDateTime.parse(gastos.fecha, DateTimeFormatter.ISO_DATE_TIME)
-    val FechaBien = CaptuFecha.format(DateTimeFormatter.ISO_DATE)
+    viewModel: GastoViewModel
+) {
+    val capturaFecha = LocalDateTime.parse(gastos.fecha, DateTimeFormatter.ISO_DATE_TIME)
+    val fechaBien = capturaFecha.format(DateTimeFormatter.ISO_DATE)
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
-
+            .padding(5.dp)
+            .background(Color.LightGray)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(10.dp)
         ) {
             Row(
                 modifier = Modifier
@@ -225,20 +237,18 @@ fun CardGastos(
                     .padding(8.dp)
             ) {
                 Text(
-                    text = "Id: " + gastos.idGasto.toString(),
-                    style = MaterialTheme.typography.labelSmall,
+                    text = "Id: ${gastos.idGasto}",
+                    style = MaterialTheme.typography.titleSmall,
                     modifier = Modifier
                         .weight(1f)
-
                 )
                 Text(
-                    text =FechaBien,
-                    style = MaterialTheme.typography.labelSmall,
+                    text = fechaBien,
+                    style = MaterialTheme.typography.titleSmall,
                     maxLines = 1,
-                    textAlign= TextAlign.End,
+                    textAlign = TextAlign.End,
                     modifier = Modifier
                         .weight(1f)
-
                 )
             }
         }
@@ -250,9 +260,10 @@ fun CardGastos(
         ) {
             Text(
                 text = gastos.suplidor.toString(),
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.displaySmall,
             )
         }
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -260,19 +271,18 @@ fun CardGastos(
         ) {
             Text(
                 text = gastos.concepto,
-                style = MaterialTheme.typography.titleSmall,
+                style = MaterialTheme.typography.titleMedium,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
         }
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(5.dp)
         ) {
-            Row (
-
-            ){
+            Row {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -281,15 +291,16 @@ fun CardGastos(
                 ) {
                     Text(
                         text = "NCF:",
-                        style = MaterialTheme.typography.bodySmall,
-                        textAlign= TextAlign.End
+                        style = MaterialTheme.typography.bodyMedium,
+                        textAlign = TextAlign.End
                     )
                     Text(
                         text = "ITBS:",
-                        style = MaterialTheme.typography.bodySmall,
-                        textAlign= TextAlign.End
+                        style = MaterialTheme.typography.bodyMedium,
+                        textAlign = TextAlign.End
                     )
                 }
+
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -301,7 +312,6 @@ fun CardGastos(
                         style = MaterialTheme.typography.bodySmall,
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1
-
                     )
                     Text(
                         text = gastos.itbis.toString(),
@@ -310,6 +320,7 @@ fun CardGastos(
                         maxLines = 1
                     )
                 }
+
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -317,73 +328,61 @@ fun CardGastos(
                         .weight(3f)
                 ) {
                     Text(
-                        text = "$ " + gastos.monto.toString(),
-                        style = MaterialTheme.typography.titleMedium,
+                        text = "$${gastos.monto}",
+                        style = MaterialTheme.typography.headlineLarge,
                         maxLines = 1,
                         textAlign = TextAlign.Right,
-
-                        )
+                    )
                 }
-
             }
-
-
         }
-        Divider( thickness = 1.dp, color = Color.Black)
+
+        Divider(thickness = 1.dp, color = Color.Gray)
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
-        )  {
-            Row(
-
-            ) {
+                .padding(10.dp)
+        ) {
+            Row {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(5.dp)
+                        .padding(3.dp)
                         .weight(2f)
-                ){
+                ) {
                     Button(
                         modifier = Modifier.fillMaxWidth(),
-                        colors =  ButtonDefaults.buttonColors(Color.Blue),
-                        onClick = {
-                            viewModel.update(gastos)
-
-                        })
-                    {
-                        Icon(imageVector = Icons.Default.BorderColor, contentDescription = "guardar", )
+                        onClick = { viewModel.update(gastos) },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFF1B864F),
+                            contentColor = Color.White
+                        )
+                    ) {
+                        Icon(imageVector = Icons.Default.Edit, contentDescription = "guardar")
                         Text(text = "Editar")
-
                     }
                 }
+
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(5.dp)
                         .weight(2f)
-                ){
-                    OutlinedButton(
+                ) {
+                    Button(
                         modifier = Modifier.fillMaxWidth(),
-                        colors =  ButtonDefaults.buttonColors(Color.Red),
-                        onClick = {
-                            gastos.idGasto?.let { viewModel. DeleteGasto(it.toInt()) }
-                        })
-
-                    {
+                        onClick = { gastos.idGasto?.let { viewModel.DeleteGasto(it.toInt()) } },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFF9C3535),
+                            contentColor = Color.White
+                        )
+                    ) {
                         Icon(imageVector = Icons.Default.Delete, contentDescription = "guardar")
                         Text(text = "Eliminar")
                     }
                 }
-
-
-
-
             }
-
         }
-
-
     }
-
 }
